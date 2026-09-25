@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+              <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+>
+
+    <title>Edit Tour</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #172033;
+        }
+
+        .page {
+            max-width: 900px;
+            margin: auto;
+            padding: 35px 20px;
+        }
+
+        .header {
+            margin-bottom: 25px;
+        }
+
+        .header a {
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .header h1 {
+            margin-top: 15px;
+            font-size: 28px;
+        }
+
+        .header p {
+            color: #64748b;
+            margin-top: 6px;
+        }
+
+        .form-box {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section h2 {
+            font-size: 17px;
+            margin-bottom: 18px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 7px;
+            color: #475569;
+        }
+
+        input {
+            padding: 12px;
+            border: 1px solid #dbe1ea;
+            border-radius: 8px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: none;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .cancel {
+            background: #f1f5f9;
+            color: #334155;
+        }
+
+        .save {
+            background: #2563eb;
+            color: white;
+        }
+
+        @media(max-width: 650px) {
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="page">
+
+
+    <div class="header">
+
+        <a href="/tours/{{ tour.id }}/">
+            ← Back to Tour
+        </a>
+
+        <h1>
+            ✏️ Edit Tour
+        </h1>
+
+        <p>
+            Update {{ tour.tour_name }} details
+        </p>
+
+    </div>
+
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <div class="form-box">
+
+
+            <!-- TOUR DETAILS -->
+
+            <div class="section">
+
+                <h2>
+                    🧳 Tour Details
+                </h2>
+
+                <div class="grid">
+
+                    <div class="field full">
+
+                        <label>
+                            Tour Name
+                        </label>
+
+                        <input
+                            type="text"
+                            name="tour_name"
+                            value="{{ tour.tour_name }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Tour Date
+                        </label>
+
+                        <input
+                            type="date"
+                            name="tour_date"
+                            value="{{ tour.tour_date|date:'Y-m-d' }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Customers
+                        </label>
+
+                        <input
+                            type="number"
+                            name="customer_count"
+                            value="{{ tour.customer_count }}"
+                            min="1"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- INCOME -->
+
+            <div class="section">
+
+                <h2>
+                    💰 Income
+                </h2>
+
+                <div class="grid">
+
+                    <div class="field">
+
+                        <label>
+                            Package Amount
+                        </label>
+
+                        <input
+                            type="number"
+                            name="package_amount"
+                            value="{{ tour.package_amount }}"
+                            min="0"
+                            step="0.01"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Amount Collected
+                        </label>
+
+                        <input
+                            type="number"
+                            name="collection"
+                            value="{{ tour.collection }}"
+                            min="0"
+                            step="0.01"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- EXPENSES -->
+
+            <div class="section">
+
+                <h2>
+                    💸 Expenses
+                </h2>
+
+                <div class="grid">
+
+                    <div class="field">
+
+                        <label>
+                            🏨 Hotel
+                        </label>
+
+                        <input
+                            type="number"
+                            name="hotel_expense"
+                            value="{{ tour.hotel_expense }}"
+                            min="0"
+                            step="0.01"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            🚗 Car / Transport
+                        </label>
+
+                        <input
+                            type="number"
+                            name="car_expense"
+                            value="{{ tour.car_expense }}"
+                            min="0"
+                            step="0.01"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            🍛 Food
+                        </label>
+
+                        <input
+                            type="number"
+                            name="food_expense"
+                            value="{{ tour.food_expense }}"
+                            min="0"
+                            step="0.01"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            📦 Other
+                        </label>
+
+                        <input
+                            type="number"
+                            name="other_expense"
+                            value="{{ tour.other_expense }}"
+                            min="0"
+                            step="0.01"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="buttons">
+
+                <a
+                    href="/tours/{{ tour.id }}/"
+                    class="btn cancel"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="btn save"
+                >
+                    Save Changes
+                </button>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+>
+
+    <title>Tours - TravelFin</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+           font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #172033;
+        }
+
+        .page {
+            max-width: 1250px;
+            margin: auto;
+            padding: 30px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 27px;
+        }
+
+        .header p {
+            color: #64748b;
+            margin-top: 6px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 11px 17px;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        .dashboard {
+            background: #f1f5f9;
+            color: #334155;
+        }
+
+        .add {
+            background: #2563eb;
+            color: white;
+        }
+
+        .box {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 13px;
+            overflow: hidden;
+        }
+
+        .toolbar {
+            padding: 20px;
+            border-bottom: 1px solid #e5e7eb;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .search {
+            width: 280px;
+            padding: 11px 14px;
+            border: 1px solid #dbe1ea;
+            border-radius: 8px;
+            outline: none;
+        }
+
+        .count {
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            text-align: left;
+            padding: 14px 18px;
+            font-size: 11px;
+            color: #64748b;
+            background: #f8fafc;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        td {
+            padding: 17px 18px;
+            font-size: 13px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .tour-name {
+            font-weight: 600;
+        }
+
+        .date {
+            color: #64748b;
+        }
+
+        .collection {
+            color: #2563eb;
+            font-weight: 600;
+        }
+
+        .expense {
+            color: #dc2626;
+        }
+
+        .profit {
+            color: #16a34a;
+            font-weight: 600;
+        }
+
+        .view {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 60px;
+            color: #64748b;
+        }
+
+        @media(max-width: 900px) {
+
+            .page {
+                padding: 18px;
+            }
+
+            .header {
+                align-items: flex-start;
+                gap: 15px;
+                flex-direction: column;
+            }
+
+            .toolbar {
+                gap: 15px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .search {
+                width: 100%;
+            }
+
+            .box {
+                overflow-x: auto;
+            }
+
+            table {
+                min-width: 850px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="page">
+
+    <div class="header">
+
+        <div>
+
+            <h1>🧳 All Tours</h1>
+
+            <p>
+                Manage and track your travel tours
+            </p>
+
+        </div>
+
+
+        <div class="buttons">
+
+            <a href="/" class="btn dashboard">
+                ← Dashboard
+            </a>
+
+            <a href="/add-tour/" class="btn add">
+                + Add Tour
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="box">
+
+        <div class="toolbar">
+
+            <input
+                type="text"
+                id="search"
+                class="search"
+                placeholder="Search tours..."
+                onkeyup="searchTours()"
+            >
+
+            <div class="count">
+                Total Tours: <strong>{{ tours.count }}</strong>
+            </div>
+
+        </div>
+
+
+        <table id="tourTable">
+
+            <thead>
+
+                <tr>
+
+                    <th>TOUR</th>
+                    <th>DATE</th>
+                    <th>CUSTOMERS</th>
+                    <th>COLLECTION</th>
+                    <th>EXPENSE</th>
+                    <th>PROFIT</th>
+                    <th>ACTION</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+                {% for tour in tours %}
+
+                <tr>
+
+                    <td class="tour-name">
+                        {{ tour.tour_name }}
+                    </td>
+
+                    <td class="date">
+                        {{ tour.tour_date|date:"d M Y" }}
+                    </td>
+
+                    <td>
+                        {{ tour.customer_count }}
+                    </td>
+
+                    <td class="collection">
+                        ₹{{ tour.collection|floatformat:0 }}
+                    </td>
+
+                    <td class="expense">
+                        ₹{{ tour.total_expense|floatformat:0 }}
+                    </td>
+
+                    <td class="profit">
+                        ₹{{ tour.profit|floatformat:0 }}
+                    </td>
+
+                    <td>
+
+                       <a
+    href="/tours/{{ tour.id }}/"
+    class="view"
+>
+    View →
+</a>
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td
+                        colspan="7"
+                        class="empty"
+                    >
+                        🧳 No tours added yet.
+                        <br><br>
+
+                        <a
+                            href="/add-tour/"
+                            class="view"
+                        >
+                            Add your first tour →
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<script>
+
+function searchTours() {
+
+    let input =
+        document.getElementById("search")
+            .value
+            .toLowerCase();
+
+    let rows =
+        document.querySelectorAll(
+            "#tourTable tbody tr"
+        );
+
+    rows.forEach(function(row) {
+
+        let text =
+            row.innerText.toLowerCase();
+
+        if (text.includes(input)) {
+
+            row.style.display = "";
+
+        } else {
+
+            row.style.display = "none";
+
+        }
+
+    });
+
+}
+
+</script>
+
+</body>
+
+</html>

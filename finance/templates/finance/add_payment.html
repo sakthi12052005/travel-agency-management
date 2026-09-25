@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Add Payment - ADN</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: 50px auto;
+            padding: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+        }
+
+        h1 {
+            margin-top: 0;
+        }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            margin-bottom: 7px;
+            font-weight: 600;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        textarea {
+            height: 90px;
+            resize: vertical;
+        }
+
+        button {
+            margin-top: 25px;
+            background: #2563eb;
+            color: white;
+            border: 0;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .back {
+            margin-left: 15px;
+            text-decoration: none;
+            color: #6b7280;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="card">
+
+        <h1>Add Payment</h1>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+
+           <label>Tour</label>
+
+<select name="tour_id" required>
+
+    <option value="">Select Tour</option>
+
+    {% for tour in tours %}
+
+        <option
+            value="{{ tour.id }}"
+            {% if selected_tour and selected_tour.id == tour.id %}
+                selected
+            {% endif %}
+        >
+            {{ tour.tour_name }}
+        </option>
+
+    {% endfor %}
+
+</select>
+
+
+            <label>Amount</label>
+
+            <input
+                type="number"
+                name="amount"
+                min="0.01"
+                step="0.01"
+                placeholder="Enter payment amount"
+                required
+            >
+
+
+            <label>Payment Date</label>
+
+            <input
+                type="date"
+                name="payment_date"
+                required
+            >
+
+
+            <label>Payment Method</label>
+
+            <select name="payment_method">
+
+                <option value="Cash">
+                    Cash
+                </option>
+
+                <option value="UPI">
+                    UPI
+                </option>
+
+                <option value="Bank Transfer">
+                    Bank Transfer
+                </option>
+
+                <option value="Card">
+                    Card
+                </option>
+
+                <option value="Other">
+                    Other
+                </option>
+
+            </select>
+
+
+            <label>Note</label>
+
+            <textarea
+                name="note"
+                placeholder="Optional note"
+            ></textarea>
+
+
+            <button type="submit">
+                Save Payment
+            </button>
+
+            <a
+                href="{% url 'payments' %}"
+                class="back">
+                Cancel
+            </a>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

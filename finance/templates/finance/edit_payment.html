@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Payment</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f5f7fb;
+        }
+
+        .page {
+            max-width: 650px;
+            margin: auto;
+            padding: 40px 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 14px;
+            border: 1px solid #e5e7eb;
+        }
+
+        a {
+            color: #2563eb;
+            text-decoration: none;
+        }
+
+        h1 {
+            margin-bottom: 6px;
+        }
+
+        .sub {
+            color: #64748b;
+            margin-bottom: 25px;
+        }
+
+        .error {
+            background: #fef2f2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin: 17px 0 7px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #dbe1ea;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 13px;
+            border: none;
+            border-radius: 8px;
+            background: #2563eb;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="page">
+
+    <a href="/tours/{{ tour.id }}/">
+        ← Back to Tour
+    </a>
+
+    <div class="card">
+
+        <h1>✏️ Edit Payment</h1>
+
+        <p class="sub">
+            {{ tour.tour_name }}
+        </p>
+
+        {% if error %}
+
+        <div class="error">
+            ⚠️ {{ error }}
+        </div>
+
+        {% endif %}
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <label>
+                Payment Amount
+            </label>
+
+            <input
+                type="number"
+                name="amount"
+                value="{{ payment.amount }}"
+                min="1"
+                max="{{ max_allowed }}"
+                step="0.01"
+                required
+            >
+
+            <label>
+                Payment Date
+            </label>
+
+            <input
+                type="date"
+                name="payment_date"
+                value="{{ payment.payment_date|date:'Y-m-d' }}"
+                required
+            >
+
+            <label>
+                Payment Method
+            </label>
+
+            <select name="payment_method">
+
+                <option value="Cash"
+                    {% if payment.payment_method == "Cash" %}selected{% endif %}>
+                    Cash
+                </option>
+
+                <option value="UPI"
+                    {% if payment.payment_method == "UPI" %}selected{% endif %}>
+                    UPI
+                </option>
+
+                <option value="Bank Transfer"
+                    {% if payment.payment_method == "Bank Transfer" %}selected{% endif %}>
+                    Bank Transfer
+                </option>
+
+                <option value="Card"
+                    {% if payment.payment_method == "Card" %}selected{% endif %}>
+                    Card
+                </option>
+
+            </select>
+
+            <label>
+                Note
+            </label>
+
+            <input
+                type="text"
+                name="note"
+                value="{{ payment.note }}"
+            >
+
+            <button type="submit">
+                Save Payment
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

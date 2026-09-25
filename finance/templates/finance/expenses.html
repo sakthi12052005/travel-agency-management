@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>Expenses - ADN</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #111827;
+        }
+
+        .container {
+            padding: 35px;
+        }
+
+        .topbar {
+            margin-bottom: 25px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-top: 6px;
+        }
+
+        .summary {
+            background: white;
+            padding: 22px;
+            border-radius: 14px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .summary-title {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .summary-value {
+            margin-top: 8px;
+            font-size: 28px;
+            font-weight: 700;
+            color: #dc2626;
+        }
+
+        .card {
+            background: white;
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f9fafb;
+            color: #6b7280;
+            font-size: 13px;
+            text-align: left;
+            padding: 16px;
+        }
+
+        td {
+            padding: 16px;
+            border-top: 1px solid #eef0f4;
+        }
+
+        tr:hover {
+            background: #f9fbff;
+        }
+
+        .expense {
+            color: #dc2626;
+            font-weight: 700;
+        }
+
+        .total {
+            font-weight: 700;
+            color: #b91c1c;
+        }
+
+        .empty {
+            text-align: center;
+            padding: 60px;
+            color: #6b7280;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="topbar">
+
+        <h1>Expenses</h1>
+
+        <div class="subtitle">
+            Track all expenses for your tours
+        </div>
+
+    </div>
+
+
+    <!-- TOTAL EXPENSE -->
+
+    <div class="summary">
+
+        <div class="summary-title">
+            Total Expenses
+        </div>
+
+        <div class="summary-value">
+            ₹{{ total_expense|floatformat:2 }}
+        </div>
+
+    </div>
+
+
+    <!-- EXPENSE TABLE -->
+
+    <div class="card">
+
+        {% if tours %}
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>#</th>
+                    <th>Tour</th>
+                    <th>Hotel</th>
+                    <th>Car</th>
+                    <th>Food</th>
+                    <th>Other</th>
+                    <th>Total Expense</th>
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+            {% for tour in tours %}
+
+                <tr>
+
+                    <td>
+                        {{ forloop.counter }}
+                    </td>
+
+                    <td>
+                        <strong>
+                            {{ tour.tour_name }}
+                        </strong>
+                    </td>
+
+                    <td class="expense">
+                        ₹{{ tour.hotel_expense|floatformat:2 }}
+                    </td>
+
+                    <td class="expense">
+                        ₹{{ tour.car_expense|floatformat:2 }}
+                    </td>
+
+                    <td class="expense">
+                        ₹{{ tour.food_expense|floatformat:2 }}
+                    </td>
+
+                    <td class="expense">
+                        ₹{{ tour.other_expense|floatformat:2 }}
+                    </td>
+
+                    <td class="total">
+                        ₹{{ tour.total_expense|floatformat:2 }}
+                    </td>
+
+                </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        {% else %}
+
+        <div class="empty">
+
+            <h3>No expenses yet</h3>
+
+            <p>
+                Add expenses to your tours to see them here.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+</body>
+</html>

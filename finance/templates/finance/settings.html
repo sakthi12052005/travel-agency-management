@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Settings - ADN</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #111827;
+        }
+
+        .container {
+            padding: 35px;
+            max-width: 900px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            color: #6b7280;
+            margin-top: 6px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            font-size: 19px;
+        }
+
+        .setting {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 0;
+            border-bottom: 1px solid #eef0f4;
+        }
+
+        .setting:last-child {
+            border-bottom: none;
+        }
+
+        .label {
+            font-weight: 600;
+        }
+
+        .description {
+            color: #6b7280;
+            font-size: 13px;
+            margin-top: 5px;
+        }
+
+        .value {
+            color: #374151;
+            font-weight: 600;
+        }
+
+        .logout {
+            display: inline-block;
+            padding: 11px 18px;
+            background: #dc2626;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .logout:hover {
+            background: #b91c1c;
+        }
+        .back-btn {
+    display: inline-block;
+    margin-bottom: 20px;
+    padding: 10px 16px;
+    background: #2563eb;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.back-btn:hover {
+    background: #1d4ed8;
+}
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+        <a href="{% url 'dashboard' %}" class="back-btn">
+    ← Back to Dashboard
+</a>
+
+    <h1>Settings</h1>
+
+
+    <div class="subtitle">
+        Manage your ADN travel agency settings
+    </div>
+
+
+    <div class="card">
+
+        <h2>Agency Information</h2>
+
+        <div class="setting">
+            <div>
+                <div class="label">Agency Name</div>
+                <div class="description">
+                    Your travel agency name
+                </div>
+            </div>
+
+            <div class="value">
+                ADN Travels
+            </div>
+        </div>
+
+
+        <div class="setting">
+            <div>
+                <div class="label">Currency</div>
+                <div class="description">
+                    Currency used for payments and expenses
+                </div>
+            </div>
+
+            <div class="value">
+                ₹ INR
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>System Settings</h2>
+
+        <div class="setting">
+            <div>
+                <div class="label">Notifications</div>
+                <div class="description">
+                    Manage system notifications
+                </div>
+            </div>
+
+            <div class="value">
+                Enabled
+            </div>
+        </div>
+
+
+        <div class="setting">
+            <div>
+                <div class="label">Language</div>
+                <div class="description">
+                    Application language
+                </div>
+            </div>
+
+            <div class="value">
+                English
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>Account</h2>
+
+        <div class="setting">
+
+            <div>
+                <div class="label">Account</div>
+
+                <div class="description">
+                    Manage your account
+                </div>
+            </div>
+
+           <a href="{% url 'logout' %}" class="logout">
+    Logout
+</a>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

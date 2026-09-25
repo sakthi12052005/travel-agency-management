@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+>
+    <title>Add Tour - TravelFin</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+
+        }
+
+        body {
+            background: #f5f7fb;
+            color: #172033;
+        }
+
+        .page {
+            max-width: 1100px;
+            margin: auto;
+            padding: 35px 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+        }
+
+        .back {
+            text-decoration: none;
+            color: #2563eb;
+            font-size: 14px;
+        }
+
+        .form-container {
+            background: white;
+            border-radius: 14px;
+            padding: 30px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #475569;
+        }
+
+        input {
+            padding: 12px 14px;
+            border: 1px solid #dbe1ea;
+            border-radius: 8px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+        }
+
+        .full {
+            grid-column: 1 / -1;
+        }
+
+        .summary {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+        }
+
+        .profit {
+            color: #16a34a;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .pending {
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            padding: 12px 22px;
+            border-radius: 8px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .cancel {
+            background: #f1f5f9;
+            color: #334155;
+        }
+
+        .save {
+            background: #2563eb;
+            color: white;
+        }
+
+        .save:hover {
+            background: #1d4ed8;
+        }
+
+        @media(max-width: 700px) {
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .full {
+                grid-column: auto;
+            }
+
+            .form-container {
+                padding: 20px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="page">
+
+    <div class="header">
+
+        <div>
+            <h1>Add New Tour</h1>
+            <p style="color:#64748b;margin-top:6px;">
+                Enter tour income and expenses
+            </p>
+        </div>
+
+        <a href="/" class="back">
+            ← Dashboard
+        </a>
+
+    </div>
+
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <div class="form-container">
+
+
+            <!-- TOUR DETAILS -->
+
+            <div class="section">
+
+                <div class="section-title">
+                    🧳 Tour Details
+                </div>
+
+                <div class="grid">
+
+                    <div class="field full">
+
+                        <label>
+                            Tour Name
+                        </label>
+
+                        <input
+                            type="text"
+                            name="tour_name"
+                            placeholder="Example: Kashmir 5 Days Package"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Tour Date
+                        </label>
+
+                        <input
+                            type="date"
+                            name="tour_date"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Number of Customers
+                        </label>
+
+                        <input
+                            type="number"
+                            name="customer_count"
+                            min="1"
+                            placeholder="20"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- INCOME -->
+
+            <div class="section">
+
+                <div class="section-title">
+                    💰 Income Details
+                </div>
+
+                <div class="grid">
+
+                    <div class="field">
+
+                        <label>
+                            Total Package Amount (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="package_amount"
+                            name="package_amount"
+                            min="0"
+                            step="0.01"
+                            placeholder="200000"
+                            oninput="calculate()"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            Amount Collected (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="collection"
+                            name="collection"
+                            min="0"
+                            step="0.01"
+                            placeholder="150000"
+                            oninput="calculate()"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- EXPENSES -->
+
+            <div class="section">
+
+                <div class="section-title">
+                    💸 Tour Expenses
+                </div>
+
+                <div class="grid">
+
+                    <div class="field">
+
+                        <label>
+                            🏨 Hotel Expense (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="hotel"
+                            name="hotel_expense"
+                            min="0"
+                            step="0.01"
+                            placeholder="Enter hotel expense"
+                            oninput="calculate()"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            🚗 Car / Transport (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="car"
+                            name="car_expense"
+                            min="0"
+                            step="0.01"
+                           placeholder="Enter car expense"
+                            oninput="calculate()"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            🍛 Food Expense (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="food"
+                            name="food_expense"
+                            min="0"
+                            step="0.01"
+                            placeholder="Enter food expense"
+                            oninput="calculate()"
+                        >
+
+                    </div>
+
+
+                    <div class="field">
+
+                        <label>
+                            📦 Other Expense (₹)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="other"
+                            name="other_expense"
+                            min="0"
+                            step="0.01"
+                            placeholder="Enter other expense"
+                            oninput="calculate()"
+                        >
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- LIVE SUMMARY -->
+
+            <div class="summary">
+
+                <div class="section-title">
+                    📊 Financial Summary
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Total Expense
+                    </span>
+
+                    <strong id="totalExpense">
+                        ₹0
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Amount Pending
+                    </span>
+
+                    <strong
+                        id="pending"
+                        class="pending"
+                    >
+                        ₹0
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Expected Profit
+                    </span>
+
+                    <strong
+                        id="profit"
+                        class="profit"
+                    >
+                        ₹0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- BUTTONS -->
+
+            <div class="buttons">
+
+                <a
+                    href="/"
+                    class="btn cancel"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="btn save"
+                >
+                    Save Tour
+                </button>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+<script>
+
+function getValue(id) {
+
+    return parseFloat(
+        document.getElementById(id).value
+    ) || 0;
+
+}
+
+
+function calculate() {
+
+    const packageAmount =
+        getValue("package_amount");
+
+    const collection =
+        getValue("collection");
+
+    const hotel =
+        getValue("hotel");
+
+    const car =
+        getValue("car");
+
+    const food =
+        getValue("food");
+
+    const other =
+        getValue("other");
+
+
+    const totalExpense =
+        hotel + car + food + other;
+
+
+    const pending =
+        packageAmount - collection;
+
+
+    const profit =
+        collection - totalExpense;
+
+
+    document.getElementById("totalExpense")
+        .innerText =
+        "₹" + totalExpense.toLocaleString("en-IN");
+
+
+    document.getElementById("pending")
+        .innerText =
+        "₹" + Math.max(pending, 0)
+            .toLocaleString("en-IN");
+
+
+    document.getElementById("profit")
+        .innerText =
+        "₹" + profit.toLocaleString("en-IN");
+
+}
+
+</script>
+
+</body>
+
+</html>
